@@ -6,6 +6,7 @@ import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'
 import { Plugin, defineConfig } from 'vite'
 import type { UserConfigExport } from 'vitest/config'
+import { resolve } from 'path'
 
 dotenv.config()
 
@@ -158,7 +159,12 @@ export default defineConfig({
     rollupOptions: {
       // Disabling tree-shaking
       // Prevent vite remove unused exports
-      treeshake: false
+      treeshake: false,
+      input: {
+        main: resolve(__dirname, 'main.ts'),
+        memory_viz : resolve(__dirname, 'memory_viz/memory_viz.ts'),
+      },
+
     }
   },
 
