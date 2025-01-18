@@ -1,14 +1,22 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  </head>
-  <body>
-    <script type="module" src="./memory_viz.js"></script>
-    <script type="module">
-      let params = new URLSearchParams(document.location.search);
-      console.log(params)
-    </script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+</head>
+
+<body>
+  <script type="module">
+    import { add_remote_files } from './memory_viz.js'
+
+    let params = new URLSearchParams(document.location.search)
+
+    var f = Object()
+    f.url = '/api/paper_playground/uuid_res?res_uuid=' + params.get("res_uuid")
+    f.name = 'snapshot'
+    add_remote_files([f])
+  </script>
+</body>
+
 </html>
