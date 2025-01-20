@@ -7,6 +7,7 @@ import { useQueueSidebarTab } from '@/hooks/sidebarTabs/queueSidebarTab'
 import { useWorkflowsSidebarTab } from '@/hooks/sidebarTabs/workflowsSidebarTab'
 import { useCommandStore } from '@/stores/commandStore'
 import { SidebarTabExtension } from '@/types/extensionTypes'
+import { useTorchMemoryVizSidebarTab } from '@/hooks/sidebarTabs/TorchMemoryVizSidebarTab'
 
 export const useSidebarTabStore = defineStore('sidebarTab', () => {
   const sidebarTabs = ref<SidebarTabExtension[]>([])
@@ -58,6 +59,7 @@ export const useSidebarTabStore = defineStore('sidebarTab', () => {
     registerSidebarTab(useNodeLibrarySidebarTab())
     registerSidebarTab(useModelLibrarySidebarTab())
     registerSidebarTab(useWorkflowsSidebarTab())
+    registerSidebarTab(useTorchMemoryVizSidebarTab())
   }
 
   return {
