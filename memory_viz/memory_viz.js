@@ -1062,8 +1062,8 @@ function MemoryPlot(
 
   function handleZoom(event) {
     const t = event.transform;
-    zoom_group.attr('transform', t);
-    axis.call(yaxis.scale(event.transform.rescaleY(yscale)));
+    zoom_group.attr('transform', d3.zoomTransform(plot_outer.node()));
+    axis.call(yaxis.scale(t.rescaleY(yscale)));
   }
 
   const thezoom = zoom().on('zoom', handleZoom);
@@ -1099,6 +1099,11 @@ function MemoryPlot(
           delegate.set_selected(delegate.default_selected);
         });
     },
+    setZoom: (transform) => {
+      plot_outer.call(thezoom.transform,transform);
+      axis.call(yaxis.scale(transform.rescaleY(yscale)));
+    },
+    getZoom: () => d3.zoomTransform(plot_outer.node()),
   };
 }
 
@@ -1219,7 +1224,8 @@ function create_trace_view(
   snapshot,
   device,
   plot_segments = false,
-  max_entries = 15000,
+  max_entries = 1500,
+  transform = null,
 ) {
   const left_pad = 70;
   const data = process_alloc_data(snapshot, device, plot_segments, max_entries);
@@ -1232,10 +1238,12 @@ function create_trace_view(
     .attr('min', 0)
     .attr('max', data.elements_length)
     .attr('value', max_entries)
-    .on('change', function () {
-      create_trace_view(dst, snapshot, device, plot_segments, this.value);
+    .on('change', function () {      
+      create_trace_view(dst, snapshot, device, plot_segments, this.value, plot.getZoom());
     });
   d.append('label').text('Detail');
+  const m = dst.append('div');
+  m.append('label').text(`Max memory used : ${formatSize(data.max_size)}`);
 
   const grid_container = dst
     .append('div')
@@ -1273,6 +1281,10 @@ function create_trace_view(
     );
   const delegate = ContextViewer(context_div.append('pre').text('none'), data);
   plot.set_delegate(delegate);
+
+  if (transform) {
+    plot.setZoom(transform)
+  }
 }
 
 function create_settings_view(dst, snapshot, device) {
