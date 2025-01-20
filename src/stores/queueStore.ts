@@ -292,6 +292,7 @@ export class TaskItemImpl {
 
   public async loadWorkflow(app: ComfyApp) {
     if (!this.workflow) {
+      app.loadApiJson(this.promptInputs, this.promptId)
       return
     }
     await app.loadGraphData(toRaw(this.workflow))

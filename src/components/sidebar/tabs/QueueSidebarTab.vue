@@ -207,8 +207,7 @@ const menuItems = computed<MenuItem[]>(() => [
   {
     label: t('g.loadWorkflow'),
     icon: 'pi pi-file-export',
-    command: () => menuTargetTask.value?.loadWorkflow(app),
-    disabled: !menuTargetTask.value?.workflow
+    command: () => menuTargetTask.value?.loadWorkflow(app)
   },
   {
     label: t('g.goToNode'),
